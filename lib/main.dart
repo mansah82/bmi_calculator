@@ -33,7 +33,7 @@ class _BmiCounterState extends State<BmiCounter> {
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
 
-  double? _bmi;
+  double _bmi = 0.0;
   String _message = "";
 
   void calculateBMI() {
@@ -52,15 +52,15 @@ class _BmiCounterState extends State<BmiCounter> {
       _bmi = bmiResult;
       //Male
       if (currentIndex == 0) {
-        if (_bmi! <= 0) {
-          _bmi = null;
-        } else if (_bmi! < 18.5) {
+        if (_bmi <= 0) {
+          _bmi = 0.0;
+        } else if (_bmi < 18.5) {
           _message = "You are underweight";
-        } else if (_bmi! < 25) {
+        } else if (_bmi < 25) {
           _message = "You are normal";
-        } else if (_bmi! < 30) {
+        } else if (_bmi < 30) {
           _message = "You are overweight";
-        } else if (_bmi! < 35) {
+        } else if (_bmi < 35) {
           _message = "You are obese";
         } else {
           _message = "You are extremely obese";
@@ -68,20 +68,21 @@ class _BmiCounterState extends State<BmiCounter> {
       }
       //Female
       else if (currentIndex == 1) {
-        if (_bmi! <= 0) {
-          _bmi = null;
-        } else if (_bmi! < 18.5) {
+        if (_bmi <= 0) {
+          _bmi = 0.0;
+        } else if (_bmi < 18.5) {
           _message = "You are underweight";
-        } else if (_bmi! < 25) {
+        } else if (_bmi < 25) {
           _message = "You are normal";
-        } else if (_bmi! < 30) {
+        } else if (_bmi < 30) {
           _message = "You are overweight";
-        } else if (_bmi! < 35) {
+        } else if (_bmi < 35) {
           _message = "You are obese";
         } else {
           _message = "You are extremely obese";
         }
       } else {
+        _bmi = 0.0;
         _message = "You have to pick your gender";
       }
     });
@@ -93,7 +94,7 @@ class _BmiCounterState extends State<BmiCounter> {
 
     setState(() {
       _message = "";
-      _bmi = null;
+      _bmi = 0.0;
       currentIndex = 3;
     });
   }
@@ -108,15 +109,13 @@ class _BmiCounterState extends State<BmiCounter> {
         ),
         elevation: 0.0,
         backgroundColor: Colors.white,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.settings,
-              color: Colors.amber.shade100,
-            ),
-          )
-        ],
+        leading: IconButton(
+          onPressed: clearUI,
+          icon: const Icon(
+            Icons.refresh,
+            color: Colors.red,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -141,11 +140,11 @@ class _BmiCounterState extends State<BmiCounter> {
               const SizedBox(
                 height: 8.0,
               ),
-              const TextField(
+              TextField(
                 keyboardType: TextInputType.number,
-                //controller: _heightController,
+                controller: _heightController,
                 textAlign: TextAlign.center,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "Your height in cm",
                   filled: true,
                   fillColor: Colors.grey,
@@ -165,11 +164,11 @@ class _BmiCounterState extends State<BmiCounter> {
               const SizedBox(
                 height: 8.0,
               ),
-              const TextField(
+              TextField(
                 keyboardType: TextInputType.number,
-                //controller: _heightController,
+                controller: _weightController,
                 textAlign: TextAlign.center,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "Your weight in kg",
                   filled: true,
                   fillColor: Colors.grey,
@@ -227,13 +226,6 @@ class _BmiCounterState extends State<BmiCounter> {
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),
                 ),
-              ),
-              SizedBox(
-                width: 100,
-                height: 50,
-                child: FloatingActionButton(
-                    onPressed: clearUI,
-                    child: const Icon(Icons.autorenew_rounded)),
               ),
             ],
           ),
